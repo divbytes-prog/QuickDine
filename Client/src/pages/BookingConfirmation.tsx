@@ -10,7 +10,7 @@ import Loader from "../components/Loader.tsx";
 import BookingSuccess from "../components/booking/BookingSuccess.tsx";
 import BookingSummary from "../components/booking/BookingSummary.tsx";
 import BookingForm from "../components/booking/BookingForm.tsx";
-import { dummyBookingData, dummyRestaurant } from "../assets/assets.ts";
+import { api } from "../lib/api.ts";
 
 export default function BookingConfirmation() {
     const { slug } = useParams<{ slug: string }>();
@@ -47,10 +47,18 @@ export default function BookingConfirmation() {
     }, [user]);
 
     useEffect(() => {
-        const fetchRestaurant = async () => {
-            setRestaurant(dummyRestaurant.find((r) => r.slug === slug));
+    const fetchRestaurant = async () => {
+        try {
+            setLoading(true);
+            const res = await api.get(`/restaurants/${slug}`)
+            setRestaurant(res.data)
+        } catch (error: any) {
+            toast.error(error?.response?.data?.message || error?.message);
+            navigate("/");
+        } finally {
             setLoading(false);
-        };
+        }
+    }
 
         if (slug) {
             fetchRestaurant();
@@ -71,15 +79,19 @@ export default function BookingConfirmation() {
             return;
         }
 
-        try {
-            setConfirming(true);
-            setConfirmedBooking(dummyBookingData);
-            toast.success("Reservation confirmed!");
-        } catch (error: any) {
-            toast.error(error?.response?.data?.message || error?.message);
-        } finally {
-            setConfirming(false);
-        }
+       try {
+    setConfirming(true);
+
+    const res = await api.post(`/bookings`, {restaurantId: restaurant._id, date,
+    time: slot, guests, occasion, specialRequests})
+    setConfirmedBooking(res.data)
+
+    toast.success("Reservation confirmed!");
+} catch (error: any) {
+    toast.error(error?.response?.data?.message || error?.message);
+} finally {
+    setConfirming(false);
+}
     };
 
     // Render Success Screen
