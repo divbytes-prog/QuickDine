@@ -9,6 +9,7 @@ import AuthModal from "../components/AuthModal.tsx";
 import { CalendarIcon, UsersIcon, ClockIcon, MapPinIcon, CalendarDaysIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { dummyFeaturedRestaurants, dummyMyBookingsData } from "../assets/assets.ts";
+import { api } from "../lib/api.ts";
 
 export default function Dashboard() {
     const { user } = useAppContext();
@@ -20,36 +21,49 @@ export default function Dashboard() {
     // Fetch user bookings
     useEffect(() => {
         const fetchBookings = async () => {
-            setBookings(dummyMyBookingsData);
-            setLoadingBookings(false);
+            try {
+                setLoadingBookings(true);
+                const res = await api.get("/bookings/my");
+                setBookings(res.data);
+            } catch (error: any) {
+                toast.error(error?.response?.data?.message || error?.message);
+            } finally {
+                setLoadingBookings(false);
+            }
         };
 
-        if (user) {
-            fetchBookings();
-        }
-    }, [user]);
-
-    // Fetch generic recommendations
-    useEffect(() => {
-        const fetchRecommendations = async () => {
-            setRecommendations(dummyFeaturedRestaurants);
-        };
-        fetchRecommendations();
+        fetchBookings();
     }, []);
 
-    const handleCancelBooking = async (bookingId: string) => {
-        if (!window.confirm("Are you sure you want to cancel this booking?")) {
-            return;
-        }
-
+   // Fetch generic recommendations
+useEffect(() => {
+    const fetchRecommendations = async () => {
         try {
-            setBookings((prev) => prev.map((b) => (b._id === bookingId ? { ...b, status: "cancelled" } : b)));
-            toast.success("Reservation cancelled successfully.");
+            const res = await api.get("/restaurants/featured")
+            setRecommendations(res.data)
         } catch (error: any) {
             toast.error(error?.response?.data?.message || error?.message);
         }
     };
+    fetchRecommendations();
+}, []);
+    const handleCancelBooking = async (bookingId: string) => {
+    if (!window.confirm("Are you sure you want to cancel this booking?")) {
+        return;
+    }
 
+    try {
+        await api.put(`/bookings/${bookingId}/cancel`)
+        // Update local state
+        setBookings((prev) => prev.map((b) => (b._id === bookingId ? {...b, status:
+        "cancelled"} : b)))
+
+        toast.success("Reservation cancelled successfully.");
+    } catch (error: any) {
+        toast.error(error?.response?.data?.message || error?.message);
+        // (cut off — likely nothing else, or a finally block)
+    }
+};
     if (!user) return null;
 
     // Filter bookings into upcoming and past
