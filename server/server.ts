@@ -14,6 +14,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (_req: Request, res: Response) => {
+    res.json({ status: "ok", service: "quickdine-api" });
+});
+
+app.get('/api/health', (_req: Request, res: Response) => {
+    res.json({ status: "ok", service: "quickdine-api" });
+});
+
 // Vercel invokes the exported app as a serverless function. The database is
 // connected lazily for API requests so a missing/slow database cannot prevent
 // the function from booting or make the local health endpoint hang.
@@ -24,14 +32,6 @@ app.use("/api", async (_req: Request, _res: Response, next: NextFunction) => {
     } catch (error) {
         next(error);
     }
-});
-
-app.get('/', (req: Request, res: Response) => {
-    res.json({ status: "ok", service: "quickdine-api" });
-});
-
-app.get('/api/health', (_req: Request, res: Response) => {
-    res.json({ status: "ok", service: "quickdine-api" });
 });
 
 app.use("/api/auth", authRouter);
