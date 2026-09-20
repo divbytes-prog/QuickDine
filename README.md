@@ -2,6 +2,11 @@
 
 A full-stack restaurant discovery and table-booking application with separate experiences for diners, restaurant owners, and administrators.
 
+| Service | Live URL |
+|---|---|
+| Web application | [quick-dine-zeta-one.vercel.app](https://quick-dine-zeta-one.vercel.app/) |
+| API deployment | [quick-dine-server-five-phi.vercel.app](https://quick-dine-server-five-phi.vercel.app/) |
+
 ## Features
 
 - Restaurant discovery and search
