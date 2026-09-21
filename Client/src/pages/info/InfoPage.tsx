@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Mail, ShieldCheck, Sparkles, UtensilsCrossed } from "lucide-react";
 import Navbar from "../../components/Navbar.tsx";
 import Footer from "../../components/Footer.tsx";
