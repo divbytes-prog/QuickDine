@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 
 export default function Search() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const searchQuery = searchParams.toString();
     const [restaurants, setRestaurants] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -43,7 +44,7 @@ export default function Search() {
             try {
                 setLoading(true);
                 const res = await api.get("/restaurants", {
-                    params: searchParams,
+                    params: new URLSearchParams(searchQuery),
                     signal: controller.signal,
                 });
                 setRestaurants(Array.isArray(res.data) ? res.data : []);
@@ -59,7 +60,7 @@ export default function Search() {
 
         fetchRestaurants();
         return () => controller.abort();
-    }, [searchParams]);
+    }, [searchQuery]);
 
     const handleTextSubmit = (e: React.FormEvent) => {
         e.preventDefault();
