@@ -88,7 +88,7 @@ export function ensureDemoData(): Promise<void> {
         const owner = await User.findOneAndUpdate(
             { email: "demo-owner@quickdine.app" },
             { $setOnInsert: { name: "QuickDine Demo Owner", password: randomPassword, role: "owner" } },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
+            { upsert: true, returnDocument: "after", setDefaultsOnInsert: true }
         );
 
         await Restaurant.bulkWrite(demoRestaurants.map((restaurant) => ({
