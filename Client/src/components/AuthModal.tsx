@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext.tsx";
 import { X, Mail, Lock, User, Phone } from "lucide-react";
 
@@ -212,9 +213,9 @@ export default function AuthModal() {
 
                         <p className="text-center text-[11px] text-black/55/80 mt-4 leading-relaxed">
                             By signing in, you agree to our{" "}
-                            <a href="#" className="underline hover:text-primary">
+                            <Link to="/terms" onClick={handleClose} className="underline hover:text-primary">
                                 Terms of Service
-                            </a>
+                            </Link>
                             .
                         </p>
                     </div>

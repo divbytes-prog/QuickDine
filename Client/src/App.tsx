@@ -6,19 +6,20 @@ import BookingConfirmation from "./pages/BookingConfirmation.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import OwnerDashboard from "./pages/owner/OwnerDashboard.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
+import InfoPage from "./pages/info/InfoPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import { Toaster } from "react-hot-toast";
 
 export default function App() {
     return (
         <>
-            <Toaster 
+            <Toaster
                 position="bottom-right"
                 toastOptions={{
                     style: {
                         background: "#1a1c1c",
                         color: "#ffffff",
-                        fontFamily: "Manrope, sans-serif",
+                        fontFamily: "Outfit, sans-serif",
                         fontSize: "12px",
                         letterSpacing: "0.02em",
                         borderRadius: "4px",
@@ -30,40 +31,45 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/restaurant/:slug" element={<RestaurantDetail />} />
-                <Route 
-                    path="/booking/:slug" 
+                <Route path="/about" element={<InfoPage page="about" />} />
+                <Route path="/partner" element={<InfoPage page="partner" />} />
+                <Route path="/careers" element={<InfoPage page="careers" />} />
+                <Route path="/terms" element={<InfoPage page="terms" />} />
+                <Route path="/privacy" element={<InfoPage page="privacy" />} />
+                <Route path="/cookies" element={<InfoPage page="cookies" />} />
+                <Route
+                    path="/booking/:slug"
                     element={
                         <ProtectedRoute>
                             <BookingConfirmation />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
-                <Route 
-                    path="/dashboard" 
+                <Route
+                    path="/dashboard"
                     element={
                         <ProtectedRoute>
                             <Dashboard />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
-                <Route 
-                    path="/owner/dashboard" 
+                <Route
+                    path="/owner/dashboard"
                     element={
                         <ProtectedRoute allowedRoles={["owner"]}>
                             <OwnerDashboard />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
-                <Route 
-                    path="/admin/dashboard" 
+                <Route
+                    path="/admin/dashboard"
                     element={
                         <ProtectedRoute allowedRoles={["admin"]}>
                             <AdminDashboard />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
             </Routes>
         </>
     );
 }
-

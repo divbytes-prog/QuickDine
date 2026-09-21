@@ -54,30 +54,30 @@ export const footerSections = [
     {
         title: "COMPANY",
         links: [
-            { label: "About Us", path: "#" },
-            { label: "Partner with Us", path: "#" },
-            { label: "Careers", path: "#" },
+            { label: "About Us", path: "/about" },
+            { label: "Partner with Us", path: "/partner" },
+            { label: "Careers", path: "/careers" },
         ],
     },
     {
         title: "LEGAL",
         links: [
-            { label: "Terms of Service", path: "#" },
-            { label: "Privacy Policy", path: "#" },
-            { label: "Cookies", path: "#" },
+            { label: "Terms of Service", path: "/terms" },
+            { label: "Privacy Policy", path: "/privacy" },
+            { label: "Cookies", path: "/cookies" },
         ],
     },
 ];
 
 export const socialLinks = [
-    { icon: GlobeIcon, href: "#" },
-    { icon: Share2Icon, href: "#" },
-    { icon: MailIcon, href: "#" },
+    { icon: GlobeIcon, href: "https://divyansh-portfolio-pearl.vercel.app/", label: "Portfolio", external: true },
+    { icon: Share2Icon, href: "https://github.com/divbytes-prog/QuickDine", label: "QuickDine on GitHub", external: true },
+    { icon: MailIcon, href: "mailto:24DCS032@lnmiit.ac.in", label: "Email QuickDine", external: false },
 ];
 
 export const bottomLinks = [
-    { label: "Terms", path: "#" },
-    { label: "Privacy", path: "#" },
+    { label: "Terms", path: "/terms" },
+    { label: "Privacy", path: "/privacy" },
 ];
 
 export const cuisines = [
