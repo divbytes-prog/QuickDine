@@ -76,6 +76,33 @@ npm run server
 
 The backend requires the appropriate environment variables for the database, authentication, and external services such as Cloudinary.
 
+Create `server/.env` for local development:
+
+```env
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=replace-with-a-long-random-secret
+CLOUDINARY_URL=cloudinary://...
+```
+
+Create `Client/.env` only when the API is hosted somewhere other than the deployed QuickDine API:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+The backend safely upserts the six portfolio demo restaurants after connecting to MongoDB. It does not delete existing users, bookings, or owner-created restaurants.
+
+## Quality checks
+
+```bash
+cd Client
+npm run lint
+npm run build
+
+cd ../server
+npm run build
+```
+
 ## Main application routes
 
 The frontend includes public restaurant discovery pages plus protected user, owner, and admin dashboards. The backend exposes separate routes for authentication, restaurants, bookings, owners, and administrators.

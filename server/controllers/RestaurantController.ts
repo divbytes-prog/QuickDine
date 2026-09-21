@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken'
 // GET /api/restaurants
 export const getRestaurants = async (req:Request, res: Response): Promise<void> => {
     try {
-        const {search, priceRange, rating, location, sort} = req.query;
+        const {search, cuisine, priceRange, rating, location, sort} = req.query;
 
         // Build query object
         const queryObj:any = {status: "approved"};
@@ -24,6 +24,11 @@ export const getRestaurants = async (req:Request, res: Response): Promise<void> 
         if(priceRange){
             const prices = Array.isArray(priceRange) ? priceRange : [priceRange];
             queryObj.priceRange = {$in: prices};
+        }
+
+        if(cuisine){
+            const cuisines = Array.isArray(cuisine) ? cuisine : [cuisine];
+            queryObj.cuisine = {$in: cuisines};
         }
 
         if(rating){

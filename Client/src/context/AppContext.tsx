@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import * as api from "../lib/api.js";
+import { api } from "../lib/api.js";
 import toast from "react-hot-toast";
 
 interface UserType {
@@ -40,8 +40,8 @@ export const AppContextProvider = ({ children }: Props) => {
     const login = async (email: string, password: string): Promise<boolean> => {
         try {
             setLoading(true);
-            const res = api.post("/auth/login", { email, password }) as any;
-            const payload = res?.data ?? res ?? {};
+            const res = await api.post("/auth/login", { email, password });
+            const payload = res.data ?? {};
             const {token: userToken, ...userData} = payload;
 
             if (!userToken) {
@@ -72,8 +72,8 @@ export const AppContextProvider = ({ children }: Props) => {
                 phone,
                 role,
             };
-            const res = api.post("/auth/register", registerPayload) as any;
-            const payload = res?.data ?? res ?? {};
+            const res = await api.post("/auth/register", registerPayload);
+            const payload = res.data ?? {};
             const {token: userToken, ...userData} = payload;
 
             if (!userToken) {
@@ -104,8 +104,8 @@ export const AppContextProvider = ({ children }: Props) => {
         const loadUser = async () => {
             if (token && !user) {
                 try {
-                    const res = (await api.get("/auth/me")) as any;
-                    const userData = res?.data ?? res ?? null;
+                    const res = await api.get("/auth/me");
+                    const userData = res.data ?? null;
                     setUser(userData);
                 } catch (error: any) {
                     toast.error(error?.response?.data?.message || error?.message);

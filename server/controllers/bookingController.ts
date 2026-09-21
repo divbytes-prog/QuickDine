@@ -10,6 +10,17 @@ export const createBooking = async (req: AuthRequest, res:Response): Promise<voi
     try {
         const { restaurantId, date, time, guests, occasion, specialRequests } = req.body;
 
+        const requestedGuests = Number(guests);
+        const bookingDate = new Date(date);
+        if (!restaurantId || !date || !time || !Number.isInteger(requestedGuests) || requestedGuests < 1 || requestedGuests > 20) {
+            res.status(400).json({ message: "Please provide a valid restaurant, date, time, and party size" });
+            return;
+        }
+        if (Number.isNaN(bookingDate.getTime())) {
+            res.status(400).json({ message: "Please provide a valid booking date" });
+            return;
+        }
+
         const restaurant = await Restaurant.findById(restaurantId);
         if(!restaurant){
             res.status(404).json({ message: "Restaurant not found" });
@@ -21,12 +32,16 @@ export const createBooking = async (req: AuthRequest, res:Response): Promise<voi
           return;
         }
 
+        if (!restaurant.availableSlots.includes(time)) {
+            res.status(400).json({ message: "Please select an available reservation time" });
+            return;
+        }
+
         // Verify seat availability
-        const requestedGuests = Number(guests);
 
         const existingBookings = await Booking.find({
           restaurant: restaurantId,
-          date: new Date(date),
+          date: bookingDate,
           time,
           status: "confirmed",
         })
@@ -46,9 +61,9 @@ export const createBooking = async (req: AuthRequest, res:Response): Promise<voi
         const booking = await Booking.create({
             user: req.user?._id,
             restaurant: restaurantId,
-            date: new Date(date),
+            date: bookingDate,
             time,
-            guests: Number(guests),
+            guests: requestedGuests,
             occasion,
             specialRequests,
             status: "confirmed",

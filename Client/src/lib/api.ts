@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const defaultApiUrl = import.meta.env.PROD
+    ? "https://quick-dine-server-five-phi.vercel.app/api"
+    : "http://localhost:5000/api";
+
 export const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+    baseURL: import.meta.env.VITE_API_URL || defaultApiUrl,
     headers: {
         "Content-Type": "application/json",
     }
@@ -20,12 +24,3 @@ api.interceptors.request.use(
         return Promise.reject(error)
     }
 )
-
-export function post(_arg0: string, _arg1: { email: string; password: string; }) {
-    throw new Error("Function not implemented.");
-}
-
-
-export function get(_arg0: string) {
-    throw new Error("Function not implemented.");
-}

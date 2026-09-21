@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ensureDemoData } from "./bootstrap.js";
 
 let connectionPromise: Promise<void> | undefined;
 
@@ -19,7 +20,7 @@ const connectDB = async (): Promise<void> => {
     }
 
     connectionPromise = mongoose.connect(uri)
-        .then(() => undefined)
+        .then(async () => ensureDemoData())
         .catch((error) => {
             connectionPromise = undefined;
             throw error;

@@ -32,12 +32,13 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
         const hashedPassword = await bcrypt.hash(password, salt)
 
         // Create user
+        const safeRole = role === "owner" ? "owner" : "user";
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
             phone,
-            role,
+            role: safeRole,
         })
 
         if(user){
